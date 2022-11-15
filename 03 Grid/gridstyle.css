@@ -1,0 +1,55 @@
+.calculator {
+    display:grid;
+    width: 40%;
+    gap: 3px;
+    background-color: grey;
+    padding: 5px;
+    border-radius: 20px;
+    grid-template-areas:
+    "result result result result"
+    "plus minus multiply divide"
+    "number7 number8 number9 equal"
+    "number4 number5 number6 equal"
+    "number1 number2 number3 equal"
+    "number0 point AC equal"
+
+}
+.number1 { grid-area: number1; }
+.number2 { grid-area: number2; }
+.number3 { grid-area: number3; }
+.number4 { grid-area: number4; }
+.number5 { grid-area: number5; }
+.number6 { grid-area: number6; }
+.number7 { grid-area: number7; }
+.number8 { grid-area: number8; }
+.number9 { grid-area: number9; }
+.number0 { grid-area: number0; }
+.point { grid-area: point; }
+.AC { grid-area: AC; }
+.equal { grid-area: equal; }
+.plus {grid-area: plus; }
+.minus { grid-area: minus; }
+.multiply { grid-area: multiply; }
+.divide { grid-area: divide; }
+.result { grid-area: result; }
+
+.calculator > div {
+    text-align: center;
+    padding: 20px;
+    font-size: 30px;;
+    border: 5px solid white;
+    background-color: white;
+}
+.calculator > .result{
+    text-align:end;
+}
+.calculator>:nth-child(n+14) {
+    background-color: grey;
+}
+.calculator>.result {
+    background-color: rgba(58, 57, 57, 0.863);
+    border: 5px solid black;
+}
+.calculator>.equal {
+    background-color: red;
+}
