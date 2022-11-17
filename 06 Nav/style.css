@@ -1,0 +1,51 @@
+body {
+    background-color: black;
+}
+.navbar {
+    display:flex;
+    flex-direction:row;
+    margin: 5px;
+    align-items: center;
+}
+.hamburgermenu{
+    display:none;
+    flex-direction: column;
+    margin: 5px;
+    height: 150px;
+    align-items:flex-start;
+    background-color: aliceblue;
+}
+@media(min-width: 768px) {
+    div:not(.itembar, .hamburgermenu, .hamburgermenu>div) {display:none}
+    .hamburgermenu {display:flex;}
+}
+.navbar>div{
+    background-color: #212528;
+    background-size: 20px;
+    padding: 20px;
+    color:white;
+    justify-content: center;
+    border: 30px;
+    border-bottom: 1px solid white;
+    font-size: 20px;
+}
+.itembar{
+    font-style:bold;
+}
+a{
+    color:white;
+    text-decoration: none;
+}
+.itemsearch:hover{
+    background-color: green;
+    color:white;
+}
+.itemsubmit {
+    border-color: green;
+    color:green;
+}
+
+.hamburgermenu>div{
+    color: black;
+    background-color: aliceblue;
+}
