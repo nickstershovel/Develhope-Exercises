@@ -1,0 +1,52 @@
+body {
+  width: 60em;
+  margin: 0 auto;
+  display:grid;
+  grid-template-areas: "colorgreen colorgreen colorgreen colorgreen colorgreen colorgreen"
+  "coloryellow coloryellow colorred colorred colorblue colorblue"
+  "coloryellow coloryellow colorred colorred colorblue colorblue"
+  "colororange colororange colororange colororange colorblue colorblue";
+}
+
+
+section {
+  padding: 2em;
+  margin: 1em;
+  
+}
+
+#green {
+  background-color: #8ffda7;
+}
+
+#orange {
+  background-color: #ffc788;
+}
+
+#yellow {
+  background-color: #ffff92;
+}
+
+#red {
+  background-color: #ff919c;
+}
+
+#blue {
+  background-color: #98d2ff;
+}
+
+ul {
+  padding: 0;
+}
+
+li {
+  background-color: white;
+  padding: 1em;
+  display: block;
+  margin: 1em;
+}
+#green{grid-area:colorgreen;}
+#blue{grid-area:colorblue;}
+#red{grid-area:colorred;}
+#orange{grid-area:colororange;}
+#yellow{grid-area:coloryellow;}
