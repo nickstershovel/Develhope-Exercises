@@ -2,18 +2,11 @@ $color-primary: red;
 $color-secondary: green;
 $color-tertiary: blue;
 
-@function remConvert($pixelSize){ //Richiesta esercizio 3!! CAMBIA PIXEL IN REM//
-    @return calc($pixelSize/16); 
-}//
-
-@mixin first-layout($color, $border-color, $font-size:1rem){
-    color: $color;
-    border: 2px solid $border-color;
-    font-size: $font-size;
-}
+@use "function.scss" as f;
+@use "mixin.scss" as m;
 .container {
     display:flex;
-    font-size:  remConvert(20);
+    font-size:  f.remConvert(20);
     flex-direction: column;
     justify-content: center;
     border: 5px solid $color-primary;
@@ -45,18 +38,18 @@ section{
 }
 article:nth-of-type(even){
     p{
-        @include first-layout(red, 0)
+        @include m.first-layout(red, 0)
     }
 }
 article.item:nth-of-type(odd){
     p{
-        @include first-layout(blue,0)
+        @include m.first-layout(blue,0)
     }
 }
 .footer{
     border: 2px solid $color-tertiary;
     padding: 25px;
     p{
-        @include first-layout(green, 0, 24px)
+        @include m.first-layout(green, 0, 24px)
     }
 }
