@@ -1,10 +1,7 @@
 $color-primary: red;
 $color-secondary: green;
 $color-tertiary: blue;
-
-@function remConvert($pixelSize){ //Richiesta esercizio 3!! CAMBIA PIXEL IN REM//
-    @return calc($pixelSize/16); 
-}//
+@use "function.scss" as f;
 
 @mixin first-layout($color, $border-color, $font-size:1rem){
     color: $color;
@@ -13,7 +10,7 @@ $color-tertiary: blue;
 }
 .container {
     display:flex;
-    font-size:  remConvert(20);
+    font-size:  f.remConvert(20);
     flex-direction: column;
     justify-content: center;
     border: 5px solid $color-primary;
