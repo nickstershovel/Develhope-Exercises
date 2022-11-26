@@ -1,0 +1,85 @@
+$color-primary: red;
+$color-secondary: green;
+$color-tertiary: blue;
+@use "sass:color";
+@use "sass:math";
+@use "function.scss" as f;
+@use "mixin.scss" as m;
+.container {
+    display:flex;
+    font-size:  f.remConvert(20);
+    flex-direction: column;
+    justify-content: center;
+    border: 5px solid $color-primary;
+    .container-title{ //RICHIESTA ESERCIZIO 4, QUESTO è H1//
+        color: $color-secondary;
+        align-self: center;
+        margin-top: 70px;
+        margin-bottom: 0px;
+        text-decoration: underline blue;
+        text-decoration-thickness: 2px;
+    }
+}
+
+.second-title{ //QUESTO è H2, CON EXTEND .CONTAINER (H1)//
+    @extend .container-title;
+    padding: 1rem;
+    border: 3px solid red;
+}
+section{
+    display:flex;
+    margin: 10px;
+    justify-content: center;
+}
+.item {
+    grid-auto-flow: row;
+    grid-auto-columns: 1fr 1fr 1fr 1fr;
+    border: 2px solid $color-secondary;
+    padding: 25px;
+}
+article:nth-of-type(even){
+    p{
+        @include m.first-layout(red, 0)
+    }
+}
+article.item:nth-of-type(odd){
+    p{
+        @include m.first-layout(blue,0)
+    }
+}
+$sizes: 1rem, 2rem, 3rem;
+@each $size in $sizes{
+    .fs-#{$size}{
+        font-size: $size;
+    }
+}
+.boxes{
+    display:grid;
+    grid-auto-flow: column;
+    gap: 25px;
+    >div{
+        width: f.remConvert(45);
+        height: f.remConvert(45);
+        border: 1px solid red;
+        @for $var from 1 through 20{
+            $color:black ;
+            $color: color.adjust($color, $lightness: +5% * $var);
+            $background-color: color.invert($color);
+            @if $var == 10{
+                $background-color: blue;
+                $color: red;
+            }
+            &:nth-child(#{$var}){
+                color: $color;
+                background-color: $background-color;
+            }
+        }   
+    }
+}
+.footer{
+    border: 2px solid $color-tertiary;
+    padding: 25px;
+    p{
+        @include m.first-layout(green, 0, 24px)
+    }
+}
