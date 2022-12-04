@@ -1,0 +1,37 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border: 5px solid red;
+}
+.container .container-title {
+  color: green;
+  align-self: center;
+  margin-top: 70px;
+  margin-bottom: 0px;
+  text-decoration: underline blue;
+  text-decoration-thickness: 2px;
+}
+
+section {
+  display: flex;
+  margin: 10px;
+  justify-content: center;
+}
+
+.item {
+  grid-auto-flow: row;
+  grid-auto-columns: 1fr 1fr 1fr 1fr;
+  border: 2px solid green;
+  padding: 25px;
+}
+
+article:nth-of-type(even) p {
+  color: red;
+}
+
+article:nth-of-type(odd) p {
+  color: blue;
+}
+
+/*# sourceMappingURL=style.css.map */
