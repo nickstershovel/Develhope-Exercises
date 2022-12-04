@@ -1,4 +1,0 @@
-@function remConvert($pixelSize){ //Richiesta esercizio 3!! CAMBIA PIXEL IN REM//
-    $remSize: calc($pixelSize/16);
-    @return $remSize+rem;
-}//
