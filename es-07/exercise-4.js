@@ -1,9 +1,8 @@
 function nicknameMap(persons){
-  let array = Array.from(persons)
   let arr = new Array()
-  array.forEach(value => {
-    arr.push(value.name + "-" + value.age)
-  });
+  for(value of persons){
+    arr.push(value.name+ "-"+value.age);
+  }
   return arr;
 }
 const persons = [
