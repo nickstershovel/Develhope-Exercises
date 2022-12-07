@@ -1,0 +1,69 @@
+$body-bg: #F5F5FB;
+$side-bg: #FFFFFF;
+$box-bg: #C4C4C4;
+$box-gap: 20px;
+$side-l-w: 200px;
+$side-r-w: 250px;
+
+.main-container{
+    display: flex;
+    border: 2px solid black;
+    height: 850px;
+    border-bottom: 4px solid black;
+    border-top: 4px solid black;
+}
+.left-sidebar{
+    background-color: $side-bg;
+    width: $side-l-w;
+    margin: 3px;
+    padding: $box-gap;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    .sidebar-title{
+        display: flex;
+        justify-content: space-between;
+    }
+    .title{
+        background-color: $box-bg;
+        width: 80%;
+        height: 40px;
+        margin-left: $box-gap;
+        align-self: flex-end;
+    }
+    .title-image{
+        background-color: $box-bg;
+        width: 20%;
+        height: 40px;
+    }
+    .sidebar-menu div{
+        background-color: $box-bg;
+        width: 100%;
+        margin-top: $box-gap;
+        height: 30px;
+    }
+    .sidebar-box{
+        background-color: $box-bg;
+        height: 140px;
+        width: 100%;
+        border-radius: 5px;
+    }
+    p{
+        margin-top: 50px;
+        flex-direction: column;
+    }
+    title{
+        font-size: 30px;
+        margin-top: 22px;
+    }
+}
+.main-body{
+    margin: 3px;
+    background-color: $body-bg;
+    flex: 3;
+}
+.right-sidebar{
+    margin: 3px;
+    background-color: $side-bg;
+    width: $side-r-w;
+}
