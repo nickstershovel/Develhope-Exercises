@@ -63,4 +63,4 @@ const notes = [
   },
 ];
 
-console.log(uncompletedNotes(notes));
+console.table(uncompletedNotes(notes));
