@@ -1,8 +1,8 @@
 function uncompletedNotes(notes) {
     const uncompletedNotes = [];
     notes.forEach(note => {
-      const uncompletedTodos = note.todos.filter(todo => !todo.done);
-      if (uncompletedTodos.length > 0) {
+      const uncompletedTodos = note.todos.filter(todo => !todo.done); //filtra note.todos per todo done not true
+      if (uncompletedTodos.length > 0) { //se ci sono uncompleted Todos
         uncompletedNotes.push({
           id: note.id,
           description: note.description,
