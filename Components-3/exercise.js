@@ -4,8 +4,8 @@ import Welcome from "../Props-1/exercise"
 class App extends React.Component {
     render() {
         <div>
-            <Hello></Hello>
-            <Welcome></Welcome>
+            <Hello />
+            <Welcome name="Patrizio"/>
         </div>
     }
 }
