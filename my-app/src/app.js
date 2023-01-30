@@ -9,7 +9,7 @@ class App extends React.Component {
     render() {
         <div>
             <Hello />
-            <Welcome name="Patrizio"/>
+            <Welcome name={<strong>Patrizio</strong>} age={25}/>
         </div>
     }
 }
