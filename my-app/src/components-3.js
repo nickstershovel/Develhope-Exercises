@@ -1,6 +1,6 @@
 import React from "react";
-import Hello from "../Components-2/exercise"
-import Welcome from "../Props-1/exercise"
+import Hello from "./components-2"
+import Welcome from "./props"
 class App extends React.Component {
     render() {
         <div>

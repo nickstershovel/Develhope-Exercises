@@ -7,10 +7,12 @@ class Age extends React.Component {
 
 class Welcome extends React.Component {
     render(){
+        return(
         <div>
         <p>Hello, {this.props.name}!</p>
-        <Age age={this.props.age} />
+        {this.props.age > 18 && <Age age={this.props.age} />}
         </div>
+        )
     }
 }
 Welcome.defaultProps = {
