@@ -10,7 +10,7 @@ class App extends React.Component {
         <div>
             <Hello />
             <Welcome name={<strong>Patrizio</strong>} age={25}/>
-            <Counter />
+            <Counter initialValue={3} incrementAmount={0.89} incrementInterval={1000}/>
         </div>
         )
     }
