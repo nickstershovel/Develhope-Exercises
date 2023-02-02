@@ -3,6 +3,7 @@ import { render } from "react-dom";
 import Hello from "./components-2"
 import Welcome from "./props"
 import Counter from "./state";
+import ClickCounter from "./events";
 
 class App extends React.Component {
     render() {
@@ -11,6 +12,7 @@ class App extends React.Component {
             <Hello />
             <Welcome name={<strong>Patrizio</strong>} age={25}/>
             <Counter initialValue={3} incrementAmount={0.89} incrementInterval={1000}/>
+            <ClickCounter />
         </div>
         )
     }
