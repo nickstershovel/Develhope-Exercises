@@ -1,9 +1,14 @@
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
 
 const UncontrolledLogin = ({ onLogin }) => {
 const usernameRef = useRef(null);
 const passwordRef = useRef(null);
 const rememberRef = useRef(null);
+
+useEffect(() => {
+    usernameRef.current.focus();
+}, []);
+
 const handleLogin = () => {
     onLogin({
         username: usernameRef.current.value,
