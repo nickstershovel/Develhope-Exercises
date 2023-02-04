@@ -5,6 +5,7 @@ import Welcome from "./props"
 import Counter from "./state";
 import ClickCounter from "./events-1";
 import ClickTracker from "./events-3";
+import InteractiveWelcome from "./forms";
 
 class App extends React.Component {
     render() {
@@ -15,6 +16,7 @@ class App extends React.Component {
             <Counter initialValue={3} incrementAmount={0.89} incrementInterval={1000}/>
             <ClickCounter />
             <ClickTracker />
+            <InteractiveWelcome/>
         </div>
         )
     }
