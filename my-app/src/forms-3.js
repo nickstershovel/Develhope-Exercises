@@ -8,6 +8,12 @@ const handleLogin = () => {
     onLogin({ username, password, remember });
 };
 
+const handleReset = () => {
+    setUsername("");
+    setPassword("");
+    setRemember(false);
+};
+
 return (
     <div>
         <input
@@ -33,6 +39,7 @@ return (
         <button disabled={!username || !password} onClick={handleLogin}>
             Login
         </button>
+        <button onClick={handleReset}>Reset</button>
     </div>
 );
 };
