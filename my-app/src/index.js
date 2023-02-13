@@ -7,6 +7,7 @@ import ClickCounter from "./events-1";
 import ClickTracker from "./events-3";
 import InteractiveWelcome from "./forms";
 import "./index.css";
+import Login from "./forms-3";
 
 class App extends React.Component {
     render() {
@@ -18,6 +19,7 @@ class App extends React.Component {
             <ClickCounter />
             <ClickTracker />
             <InteractiveWelcome/>
+            <Login/>
         </div>
         )
     }

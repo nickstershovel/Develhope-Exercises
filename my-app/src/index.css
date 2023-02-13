@@ -3,3 +3,11 @@
     border: 1px solid blue;
     padding: 30px;
 }
+
+.red {
+    background-color: red;
+}
+
+.green {
+    background-color: green;
+}
