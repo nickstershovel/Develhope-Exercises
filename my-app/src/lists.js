@@ -16,6 +16,12 @@ class TodoList extends React.Component {
         }));
     };
 
+    handleRemoveClick = (index) => {
+        this.setState(prevState => ({
+            items: prevState.items.filter((_, i) => i !== index)
+        }));
+    };
+
     handleResetClick = () => {
         this.setState({ items: [] });
     };
@@ -36,7 +42,12 @@ class TodoList extends React.Component {
                 <button onClick={this.handleResetClick}>Reset</button>
                 <ul>
                     {this.state.items.map((item, index) => (
-                        <li key={index}>{item}</li>
+                        <li key={index}>
+                            {item}
+                            <button onClick={() => this.handleRemoveClick(index)}>
+                                Remove
+                            </button>
+                        </li>
                     ))}
                 </ul>
             </div>
