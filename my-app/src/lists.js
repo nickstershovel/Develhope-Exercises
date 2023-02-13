@@ -16,6 +16,10 @@ class TodoList extends React.Component {
         }));
     };
 
+    handleResetClick = () => {
+        this.setState({ items: [] });
+    };
+
     handleInputChange = (event) => {
         this.setState({ input: event.target.value });
     };
@@ -29,6 +33,7 @@ class TodoList extends React.Component {
                     onChange={this.handleInputChange}
                 />
                 <button onClick={this.handleClick}>Add</button>
+                <button onClick={this.handleResetClick}>Reset</button>
                 <ul>
                     {this.state.items.map((item, index) => (
                         <li key={index}>{item}</li>
