@@ -6,11 +6,12 @@ import Counter from "./state";
 import ClickCounter from "./events-1";
 import ClickTracker from "./events-3";
 import InteractiveWelcome from "./forms";
+import "./index.css";
 
 class App extends React.Component {
     render() {
         return(
-        <div>
+        <div className="welcome">
             <Hello />
             <Welcome name={<strong>Patrizio</strong>} age={25}/>
             <Counter initialValue={3} incrementAmount={0.89} incrementInterval={1000}/>
