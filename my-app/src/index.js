@@ -8,6 +8,8 @@ import ClickTracker from "./events-3";
 import InteractiveWelcome from "./forms";
 import "./index.css";
 import Login from "./forms-3";
+import TodoList from "./lists";
+import LanguageProvider from "./languagecontext";
 
 class App extends React.Component {
     render() {
@@ -20,6 +22,8 @@ class App extends React.Component {
             <ClickTracker />
             <InteractiveWelcome/>
             <Login/>
+            <TodoList/>
+            <LanguageProvider/>
         </div>
         )
     }
