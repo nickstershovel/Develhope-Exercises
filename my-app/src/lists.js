@@ -1,5 +1,5 @@
 import React from "react";
-
+import List from "./todolist";
 class TodoList extends React.Component {
     constructor(props) {
         super(props);
@@ -40,7 +40,8 @@ class TodoList extends React.Component {
                 />
                 <button onClick={this.handleClick}>Add</button>
                 <button onClick={this.handleResetClick}>Reset</button>
-                <ul>
+                <List handleRemoveClick={this.handleRemoveClick} items={this.state.items}/>
+                {/* <ul>
                     {this.state.items.map((item, index) => (
                         <li key={index}>
                             {item}
@@ -49,7 +50,7 @@ class TodoList extends React.Component {
                             </button>
                         </li>
                     ))}
-                </ul>
+                </ul> */}
             </div>
         );
     }
