@@ -1,59 +1,35 @@
-import React from "react";
+import React, { useState } from "react";
 import List from "./todolist";
-class TodoList extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            items: [],
-            input: ""
-        };
-    }
 
-    handleClick = () => {
-        this.setState(prevState => ({
-            items: [...prevState.items, prevState.input],
-            input: ""
-        }));
+function TodoList() {
+    const [items, setItems] = useState([]);
+    const [input, setInput] = useState("");
+
+    const handleClick = () => {
+        setItems([...items, input]);
+        setInput("");
     };
 
-    handleRemoveClick = (index) => {
-        this.setState(prevState => ({
-            items: prevState.items.filter((_, i) => i !== index)
-        }));
+    const handleRemoveClick = (index) => {
+        setItems(items.filter((_, i) => i !== index));
     };
 
-    handleResetClick = () => {
-        this.setState({ items: [] });
+    const handleResetClick = () => {
+        setItems([]);
     };
 
-    handleInputChange = (event) => {
-        this.setState({ input: event.target.value });
+    const handleInputChange = (event) => {
+        setInput(event.target.value);
     };
 
-    render() {
-        return (
-            <div>
-                <input
-                    type="text"
-                    value={this.state.input}
-                    onChange={this.handleInputChange}
-                />
-                <button onClick={this.handleClick}>Add</button>
-                <button onClick={this.handleResetClick}>Reset</button>
-                <List handleRemoveClick={this.handleRemoveClick} items={this.state.items}/>
-                {/* <ul>
-                    {this.state.items.map((item, index) => (
-                        <li key={index}>
-                            {item}
-                            <button onClick={() => this.handleRemoveClick(index)}>
-                                Remove
-                            </button>
-                        </li>
-                    ))}
-                </ul> */}
-            </div>
-        );
-    }
+    return (
+        <div>
+            <input type="text" value={input} onChange={handleInputChange} />
+            <button onClick={handleClick}>Add</button>
+            <button onClick={handleResetClick}>Reset</button>
+            <List handleRemoveClick={handleRemoveClick} items={items} />
+        </div>
+    );
 }
 
 export default TodoList;
