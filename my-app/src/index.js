@@ -13,20 +13,23 @@ import LanguageProvider from "./languagecontext";
 import Sum from "./sum";
 
 class App extends React.Component {
+    handleCounterChange = (count) => {
+        console.log(`Counter changed to ${count}`);
+    };
     render() {
-        return(
-        <div className="welcome">
-            <Hello />
-            <Welcome name={<strong>Patrizio</strong>} age={25}/>
-            <Counter initialValue={3} incrementAmount={0.89} incrementInterval={1000}/>
-            <ClickCounter />
-            <ClickTracker />
-            <InteractiveWelcome/>
-            <Login/>
-            <TodoList/>
-            <LanguageProvider/>
-            <Sum numbers={[2, 10, 19,78]}/>
-        </div>
+        return (
+            <div className="welcome">
+                <Hello />
+                <Welcome name={<strong>Patrizio</strong>} age={25} />
+                <Counter initialValue={3} incrementAmount={0.89} incrementInterval={1000} />
+                <ClickCounter onCounterChange={this.handleCounterChange} />
+                <ClickTracker />
+                <InteractiveWelcome />
+                <Login />
+                <TodoList />
+                <LanguageProvider />
+                <Sum numbers={[2, 10, 19, 78]} />
+            </div>
         )
     }
 }
