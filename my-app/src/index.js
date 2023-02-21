@@ -11,6 +11,7 @@ import Login from "./forms-3";
 import TodoList from "./lists";
 import LanguageProvider from "./languagecontext";
 import Sum from "./sum";
+import GithubUser from "./git";
 
 class App extends React.Component {
     handleCounterChange = (count) => {
@@ -29,6 +30,7 @@ class App extends React.Component {
                 <TodoList />
                 <LanguageProvider />
                 <Sum numbers={[2, 10, 19, 78]} />
+                <GithubUser username={"nickstershovel"}/>
             </div>
         )
     }
