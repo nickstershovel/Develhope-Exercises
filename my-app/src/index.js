@@ -10,6 +10,7 @@ import "./index.css";
 import Login from "./forms-3";
 import TodoList from "./lists";
 import LanguageProvider from "./languagecontext";
+import Sum from "./sum";
 
 class App extends React.Component {
     render() {
@@ -24,6 +25,7 @@ class App extends React.Component {
             <Login/>
             <TodoList/>
             <LanguageProvider/>
+            <Sum numbers={[2, 10, 19,78]}/>
         </div>
         )
     }
