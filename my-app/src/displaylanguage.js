@@ -1,5 +1,5 @@
-import { useContext } from 'react';
-import { LanguageContext } from './languagecontext'
+import React, { useContext } from 'react';
+import { LanguageContext } from './languagecontext';
 
 const DisplayLanguage = () => {
   const { selectedLanguage } = useContext(LanguageContext);
@@ -13,6 +13,5 @@ const DisplayLanguage = () => {
     </div>
   );
 };
-
 
 export default DisplayLanguage;
