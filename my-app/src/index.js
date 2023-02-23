@@ -13,12 +13,19 @@ import LanguageProvider from "./languagecontext";
 import Sum from "./sum";
 import GithubUser from "./git";
 import GithubUserList from "./githublist";
+import CarDetails from "./cardetails";
 
 class App extends React.Component {
     handleCounterChange = (count) => {
         console.log(`Counter changed to ${count}`);
     };
-    render() {
+    render()
+    {
+        const initialData = {
+            model: 'Macchina bella',
+            year: 2022,
+            color: 'red',
+        };
         return (
             <div className="welcome">
                 <Hello />
@@ -31,8 +38,9 @@ class App extends React.Component {
                 <TodoList />
                 <LanguageProvider />
                 <Sum numbers={[2, 10, 19, 78]} />
-                <GithubUser username={"nickstershovel"}/>
-                <GithubUserList/>
+                <GithubUser username={"nickstershovel"} />
+                <GithubUserList />
+                <CarDetails initialData={initialData}/>
             </div>
         )
     }
