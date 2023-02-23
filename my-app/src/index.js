@@ -14,6 +14,7 @@ import Sum from "./sum";
 import GithubUser from "./git";
 import GithubUserList from "./githublist";
 import CarDetails from "./cardetails";
+import FilteredList from "./filteredlist";
 
 class App extends React.Component {
     handleCounterChange = (count) => {
@@ -41,6 +42,7 @@ class App extends React.Component {
                 <GithubUser username={"nickstershovel"} />
                 <GithubUserList />
                 <CarDetails initialData={initialData}/>
+                <FilteredList/>
             </div>
         )
     }
