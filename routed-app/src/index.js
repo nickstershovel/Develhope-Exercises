@@ -10,6 +10,9 @@ function ShowGithubUser() {
     const { username } = useParams();
     return <GithubUser username={username} />;
 }
+function NotFound() {
+    return <h1>404 Not Found</h1>;
+}
 
 function App() {
     return (
@@ -42,6 +45,7 @@ function App() {
                         }
                     />
                     <Route path="/users/:username" element={<ShowGithubUser />} />
+                    <Route path="*" element={<NotFound/>}/>
                 </Routes>
             </div>
         </BrowserRouter>
