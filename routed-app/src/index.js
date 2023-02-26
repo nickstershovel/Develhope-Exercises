@@ -5,6 +5,7 @@ import Welcome from "./props";
 import Counter from "./state";
 import GithubUser from "./git";
 import { useParams } from "react-router-dom";
+import GithubUserList from "./githublist";
 
 function ShowGithubUser() {
     const { username } = useParams();
@@ -27,7 +28,7 @@ function App() {
                             <Link to="/counter">Counter</Link>
                         </li>
                         <li>
-                            <Link to="/users/nickstershovel">nickstershovel</Link>
+                            <Link to="/users">Github Users</Link>
                         </li>
                     </ul>
                 </nav>
@@ -44,8 +45,10 @@ function App() {
                             />
                         }
                     />
-                    <Route path="/users/:username" element={<ShowGithubUser />} />
-                    <Route path="*" element={<NotFound/>}/>
+                    <Route path="/users" element={<GithubUserList />}>
+                        <Route path=":username" element={<ShowGithubUser />} />
+                    </Route>
+                    <Route path="*" element={<NotFound />} />
                 </Routes>
             </div>
         </BrowserRouter>
