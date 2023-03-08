@@ -1,0 +1,23 @@
+{
+  "name": "develhope-exercises",
+  "version": "1.0.0",
+  "description": "Questa è la repository da usare per svolgere gli esercizi di Develhope. \r Ogni branch è diviso per argomento.",
+  "main": "random-id.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nickstershovel/Develhope-Exercises.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nickstershovel/Develhope-Exercises/issues"
+  },
+  "homepage": "https://github.com/nickstershovel/Develhope-Exercises#readme",
+  "dependencies": {
+    "figlet": "^1.5.2"
+  }
+}
