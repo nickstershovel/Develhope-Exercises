@@ -1,17 +1,15 @@
 const express = require("express");
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3020;
+import prisma from "./lib/prisma/client"
 
-import { PrismaClient } from '@prisma/client'
-
-const prisma = new PrismaClient()
 app.use(express.json())
 
 app.get("/", (req, res) => {
     res.json({ message: "Hello, world!" });
 });
 
-app.get("/resources", async (req, res) => {
+app.get("/planets", async (req, res) => {
     try {
         const resources = await prisma.planet.findMany();
         res.json(resources);
@@ -95,4 +93,4 @@ app.listen(port, () => {
 });
 
 
-module.exports = app;
+export default app;

@@ -38,20 +38,19 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var express = require("express");
 var app = express();
-var port = process.env.PORT || 3000;
-var client_1 = require("@prisma/client");
-var prisma = new client_1.PrismaClient();
+var port = process.env.PORT || 3020;
+var client_1 = require("./lib/prisma/client");
 app.use(express.json());
 app.get("/", function (req, res) {
     res.json({ message: "Hello, world!" });
 });
-app.get("/resources", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+app.get("/planets", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var resources, error_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, prisma.planet.findMany()];
+                return [4 /*yield*/, client_1.default.planet.findMany()];
             case 1:
                 resources = _a.sent();
                 res.json(resources);
@@ -64,6 +63,8 @@ app.get("/resources", function (req, res) { return __awaiter(void 0, void 0, voi
         }
     });
 }); });
+var NAME_REQUIRED_ERROR = 'Name field is required and must be a string';
+var DIAMETER_REQUIRED_ERROR = 'Diameter field is required and must be a positive number';
 app.post('/planets', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var planet, newPlanet, error_2;
     return __generator(this, function (_a) {
@@ -71,8 +72,16 @@ app.post('/planets', function (req, res) { return __awaiter(void 0, void 0, void
             case 0:
                 _a.trys.push([0, 2, , 3]);
                 planet = req.body;
-                return [4 /*yield*/, prisma.planet.create({
-                        data: planet
+                // Validate name field
+                if (!planet.name || typeof planet.name !== 'string') {
+                    return [2 /*return*/, res.status(400).json({ errors: [NAME_REQUIRED_ERROR] })];
+                }
+                // Validate diameter field
+                if (!planet.diameter || typeof planet.diameter !== 'number' || planet.diameter <= 0) {
+                    return [2 /*return*/, res.status(400).json({ errors: [DIAMETER_REQUIRED_ERROR] })];
+                }
+                return [4 /*yield*/, client_1.default.planet.create({
+                        data: planet,
                     })];
             case 1:
                 newPlanet = _a.sent();
@@ -86,7 +95,85 @@ app.post('/planets', function (req, res) { return __awaiter(void 0, void 0, void
         }
     });
 }); });
+app.get('/planets/:id', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var planetId, planet, error_3;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                planetId = parseInt(req.params.id);
+                return [4 /*yield*/, client_1.default.planet.findUnique({ where: { id: planetId } })];
+            case 1:
+                planet = _a.sent();
+                if (!planet) {
+                    return [2 /*return*/, res.status(404).json({ error: "Planet with ID ".concat(planetId, " not found") })];
+                }
+                res.json(planet);
+                return [3 /*break*/, 3];
+            case 2:
+                error_3 = _a.sent();
+                res.status(500).json({ error: error_3.message });
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
+        }
+    });
+}); });
+app.put('/planets/:id', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var planetId, planetToUpdate, updatedPlanet, error_4;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 3, , 4]);
+                planetId = parseInt(req.params.id);
+                return [4 /*yield*/, client_1.default.planet.findUnique({ where: { id: planetId } })];
+            case 1:
+                planetToUpdate = _a.sent();
+                if (!planetToUpdate) {
+                    return [2 /*return*/, res.status(404).json({ error: "Planet with ID ".concat(planetId, " not found") })];
+                }
+                return [4 /*yield*/, client_1.default.planet.update({
+                        where: { id: planetId },
+                        data: req.body,
+                    })];
+            case 2:
+                updatedPlanet = _a.sent();
+                res.json(updatedPlanet);
+                return [3 /*break*/, 4];
+            case 3:
+                error_4 = _a.sent();
+                res.status(500).json({ error: error_4.message });
+                return [3 /*break*/, 4];
+            case 4: return [2 /*return*/];
+        }
+    });
+}); });
+app.delete('/planets/:id', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var planetId, planetToDelete, error_5;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 3, , 4]);
+                planetId = parseInt(req.params.id);
+                return [4 /*yield*/, client_1.default.planet.findUnique({ where: { id: planetId } })];
+            case 1:
+                planetToDelete = _a.sent();
+                if (!planetToDelete) {
+                    return [2 /*return*/, res.status(404).json({ error: "Planet with ID ".concat(planetId, " not found") })];
+                }
+                return [4 /*yield*/, client_1.default.planet.delete({ where: { id: planetId } })];
+            case 2:
+                _a.sent();
+                res.sendStatus(204);
+                return [3 /*break*/, 4];
+            case 3:
+                error_5 = _a.sent();
+                res.status(500).json({ error: error_5.message });
+                return [3 /*break*/, 4];
+            case 4: return [2 /*return*/];
+        }
+    });
+}); });
 app.listen(port, function () {
     console.log("Server listening on port ".concat(port));
 });
-module.exports = app;
+exports.default = app;
