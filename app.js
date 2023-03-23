@@ -45,8 +45,27 @@ app.use(express.json());
 app.get("/", function (req, res) {
     res.json({ message: "Hello, world!" });
 });
+app.get("/resources", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var resources, error_1;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, prisma.planet.findMany()];
+            case 1:
+                resources = _a.sent();
+                res.json(resources);
+                return [3 /*break*/, 3];
+            case 2:
+                error_1 = _a.sent();
+                res.status(500).json({ error: error_1.message });
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
+        }
+    });
+}); });
 app.post('/planets', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var planet, newPlanet, error_1;
+    var planet, newPlanet, error_2;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -60,8 +79,8 @@ app.post('/planets', function (req, res) { return __awaiter(void 0, void 0, void
                 res.status(201).json(newPlanet);
                 return [3 /*break*/, 3];
             case 2:
-                error_1 = _a.sent();
-                res.status(500).json({ error: error_1.message });
+                error_2 = _a.sent();
+                res.status(500).json({ error: error_2.message });
                 return [3 /*break*/, 3];
             case 3: return [2 /*return*/];
         }

@@ -11,10 +11,18 @@ app.get("/", (req, res) => {
     res.json({ message: "Hello, world!" });
 });
 
+app.get("/resources", async (req, res) => {
+    try {
+        const resources = await prisma.planet.findMany();
+        res.json(resources);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
 
 app.post('/planets', async (req, res) => {
     try {
-        const planet  = req.body;
+        const planet = req.body;
         const newPlanet = await prisma.planet.create({
             data: planet
         });
