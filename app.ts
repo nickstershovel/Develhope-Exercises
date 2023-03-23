@@ -36,9 +36,18 @@ app.post('/planets', async (req, res) => {
         if (!planet.diameter || typeof planet.diameter !== 'number' || planet.diameter <= 0) {
             return res.status(400).json({ errors: [DIAMETER_REQUIRED_ERROR] });
         }
-
-        app.listen(port, () => {
-            console.log(`Server listening on port ${port}`);
+        const newPlanet = await prisma.planet.create({
+            data: planet,
         });
+        res.status(201).json(newPlanet);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
 
-        module.exports = app;
+app.listen(port, () => {
+    console.log(`Server listening on port ${port}`);
+});
+
+
+module.exports = app;
