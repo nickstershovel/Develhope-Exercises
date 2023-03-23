@@ -45,6 +45,51 @@ app.post('/planets', async (req, res) => {
     }
 });
 
+app.get('/planets/:id', async (req, res) => {
+    try {
+        const planetId = parseInt(req.params.id);
+        const planet = await prisma.planet.findUnique({ where: { id: planetId } });
+        if (!planet) {
+            return res.status(404).json({ error: `Planet with ID ${planetId} not found` });
+        }
+        res.json(planet);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}
+)
+
+app.put('/planets/:id', async (req, res) => {
+    try {
+        const planetId = parseInt(req.params.id);
+        const planetToUpdate = await prisma.planet.findUnique({ where: { id: planetId } });
+        if (!planetToUpdate) {
+            return res.status(404).json({ error: `Planet with ID ${planetId} not found` });
+        }
+        const updatedPlanet = await prisma.planet.update({
+            where: { id: planetId },
+            data: req.body,
+        });
+        res.json(updatedPlanet);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+app.delete('/planets/:id', async (req, res) => {
+    try {
+        const planetId = parseInt(req.params.id);
+        const planetToDelete = await prisma.planet.findUnique({ where: { id: planetId } });
+        if (!planetToDelete) {
+            return res.status(404).json({ error: `Planet with ID ${planetId} not found` });
+        }
+        await prisma.planet.delete({ where: { id: planetId } });
+        res.sendStatus(204);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
 app.listen(port, () => {
     console.log(`Server listening on port ${port}`);
 });
