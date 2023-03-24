@@ -146,3 +146,81 @@ describe("GET /planet/:id", () => {
         expect(response.text).toContain("Cannot GET /planets/asdf")
     })
 });
+
+describe("PUT /planets/:id", () => {
+    test("Valid request", async () => {
+        const planet = {
+            "id": 5,
+            "name": "Venus",
+            "description": "Lovely planet!",
+            "diameter": 21200,
+            "createdAt": "2023-03-24T14:16:12.298Z",
+            "updatedAt": "2023-03-24T14:16:12.298Z"
+        }
+
+        // @ts-ignore
+        prismaMock.planet.update.mockResolvedValue(planet);
+
+        const response = await request
+            .put("/planets/3")
+            .send({
+                "name": "Venus",
+                "description": "Lovely planet!",
+                "diameter": 21200,
+            })
+            .expect(200)
+            .expect("Content-Type", "application/json; charset=utf-8");
+
+        expect(response.body).toEqual(planet)
+    });
+
+    test("Invalid request", async () => {
+        const planet = {
+            "diameter": 21200,
+        }
+
+
+        const response = await request
+            .put("/planets/23")
+            .send(planet)
+            .expect(422)
+            .expect("Content-Type", "application/json; charset=utf-8");
+
+        expect(response.body).toEqual({
+            errors: {
+                body: expect.any(Array)
+            }
+        })
+    }
+    )
+    test("Planet does not exist", async () => {
+    
+        // @ts-ignore
+        prismaMock.planet.update.mockRejectedValue(new Error("Error"));
+        const response = await request
+        .put("/planets/23")
+        .expect({
+            "name": "Venus",
+            "description": "Lovely planet!",
+            "diameter": 21200,
+        })
+        .expect("Content-Type", "text/html; charset=utf-8")
+
+        expect(response.text).toContain("Cannot PUT /planets/23")
+    })
+
+    test("Invalid planet ID", async () => {
+
+        const response = await request
+        .put("/planets/asdf")
+        .send({
+            "name": "Venus",
+            "description": "Lovely planet!",
+            "diameter": 21200,
+        })
+        .expect(404)
+        .expect("Content-Type", "text/html; charset=utf-8")
+
+        expect(response.text).toContain("Cannot PUT /planets/asdf")
+    })
+})

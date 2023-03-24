@@ -104,22 +104,19 @@ app.get('/planets/:id(\\d+)', function (req, res, next) { return __awaiter(void 
         }
     });
 }); });
-app.put('/planets/:id', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var planetId, planetToUpdate, updatedPlanet, error_2;
+app.put('/planets/:id(\\d+)', (0, validation_1.validate)({ body: validation_1.planetSchema }), function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+    var planetId, planetData, updatedPlanet, error_2;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                _a.trys.push([0, 3, , 4]);
                 planetId = parseInt(req.params.id);
-                return [4 /*yield*/, client_1.default.planet.findUnique({ where: { id: planetId } })];
+                planetData = (req.body);
+                _a.label = 1;
             case 1:
-                planetToUpdate = _a.sent();
-                if (!planetToUpdate) {
-                    return [2 /*return*/, res.status(404).json({ error: "Planet with ID ".concat(planetId, " not found") })];
-                }
+                _a.trys.push([1, 3, , 4]);
                 return [4 /*yield*/, client_1.default.planet.update({
                         where: { id: planetId },
-                        data: req.body,
+                        data: planetData,
                     })];
             case 2:
                 updatedPlanet = _a.sent();
@@ -127,7 +124,8 @@ app.put('/planets/:id', function (req, res) { return __awaiter(void 0, void 0, v
                 return [3 /*break*/, 4];
             case 3:
                 error_2 = _a.sent();
-                res.status(500).json({ error: error_2.message });
+                res.status(404);
+                next("Cannot PUT /planets/".concat(planetId));
                 return [3 /*break*/, 4];
             case 4: return [2 /*return*/];
         }

@@ -50,20 +50,20 @@ app.get('/planets/:id(\\d+)', async (req, res, next) => {
 
 )
 
-app.put('/planets/:id', async (req, res) => {
-    try {
+app.put('/planets/:id(\\d+)', validate({ body: planetSchema }),async (req, res, next) => {
         const planetId = parseInt(req.params.id);
-        const planetToUpdate = await prisma.planet.findUnique({ where: { id: planetId } });
-        if (!planetToUpdate) {
-            return res.status(404).json({ error: `Planet with ID ${planetId} not found` });
-        }
+        const planetData = (req.body);
+
+        try{
         const updatedPlanet = await prisma.planet.update({
             where: { id: planetId },
-            data: req.body,
+            data: planetData,
         });
         res.json(updatedPlanet);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
+    }catch(error) {
+        res.status(404);
+        next(`Cannot PUT /planets/${planetId}`)
+
     }
 });
 
