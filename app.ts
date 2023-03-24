@@ -23,10 +23,12 @@ app.get("/planets", async (req, res) => {
 
 
 app.post('/planets', validate({ body: planetSchema }), async (req, res) => {
-        const planet: PlanetData = req.body;
-        // const newPlanet = await prisma.planet.create({
-        //     data: planet,
-        // });
+        const planetData: PlanetData = req.body;
+
+
+        const planet = await prisma.planet.create({
+            data: planetData,
+        });
         res.status(201).json(planet);
 });
 

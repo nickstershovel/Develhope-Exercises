@@ -46,7 +46,7 @@ describe("GET /planets", () => {
             .get("/planets")
             .expect(200)
             .expect("Content-Type", "application/json; charset=utf-8");
-            
+
         expect(response.body).toEqual(planets)
     }
     )
@@ -57,32 +57,41 @@ describe("GET /planets", () => {
 describe("POST /planets", () => {
     test("Valid request", async () => {
         const planet = {
-                "name": "Venus",
-                "diameter": 21200,
-            }
-    
-    
+            "id": 5,
+            "name": "Venus",
+            "description": null,
+            "diameter": 21200,
+            "createdAt": "2023-03-24T14:16:12.298Z",
+            "updatedAt": "2023-03-24T14:16:12.298Z"
+        }
+
+        // @ts-ignore
+        prismaMock.planet.create.mockResolvedValue(planet);
+
         const response = await request
             .post("/planets")
-            .send(planet)
+            .send({
+                "name": "Venus",
+                "diameter": 21200,
+            })
             .expect(201)
             .expect("Content-Type", "application/json; charset=utf-8");
-            
+
         expect(response.body).toEqual(planet)
     });
-    
+
     test("Invalid request", async () => {
         const planet = {
-                "diameter": 21200,
-            }
-    
-    
+            "diameter": 21200,
+        }
+
+
         const response = await request
             .post("/planets")
             .send(planet)
             .expect(422)
             .expect("Content-Type", "application/json; charset=utf-8");
-            
+
         expect(response.body).toEqual({
             errors: {
                 body: expect.any(Array)

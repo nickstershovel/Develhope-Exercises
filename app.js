@@ -65,14 +65,19 @@ app.get("/planets", function (req, res) { return __awaiter(void 0, void 0, void 
     });
 }); });
 app.post('/planets', (0, validation_1.validate)({ body: validation_1.planetSchema }), function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var planet;
+    var planetData, planet;
     return __generator(this, function (_a) {
-        planet = req.body;
-        // const newPlanet = await prisma.planet.create({
-        //     data: planet,
-        // });
-        res.status(201).json(planet);
-        return [2 /*return*/];
+        switch (_a.label) {
+            case 0:
+                planetData = req.body;
+                return [4 /*yield*/, client_1.default.planet.create({
+                        data: planetData,
+                    })];
+            case 1:
+                planet = _a.sent();
+                res.status(201).json(planet);
+                return [2 /*return*/];
+        }
     });
 }); });
 app.get('/planets/:id', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
