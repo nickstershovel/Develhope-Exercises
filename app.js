@@ -80,31 +80,32 @@ app.post('/planets', (0, validation_1.validate)({ body: validation_1.planetSchem
         }
     });
 }); });
-app.get('/planets/:id', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var planetId, planet, error_2;
+app.get('/planets/:id(\\d+)', function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+    var planetId, planet;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                _a.trys.push([0, 2, , 3]);
                 planetId = parseInt(req.params.id);
                 return [4 /*yield*/, client_1.default.planet.findUnique({ where: { id: planetId } })];
             case 1:
                 planet = _a.sent();
+                //     if (!planet) {
+                //         return res.status(404).json({ error: `Planet with ID ${planetId} not found` });
+                //     }
+                //     res.json(planet);
+                // } catch (error) {
+                //     res.status(500).json({ error: error.message });
                 if (!planet) {
-                    return [2 /*return*/, res.status(404).json({ error: "Planet with ID ".concat(planetId, " not found") })];
+                    res.status(404);
+                    return [2 /*return*/, next("Cannot GET /planets/".concat(planetId))];
                 }
                 res.json(planet);
-                return [3 /*break*/, 3];
-            case 2:
-                error_2 = _a.sent();
-                res.status(500).json({ error: error_2.message });
-                return [3 /*break*/, 3];
-            case 3: return [2 /*return*/];
+                return [2 /*return*/];
         }
     });
 }); });
 app.put('/planets/:id', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var planetId, planetToUpdate, updatedPlanet, error_3;
+    var planetId, planetToUpdate, updatedPlanet, error_2;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -125,15 +126,15 @@ app.put('/planets/:id', function (req, res) { return __awaiter(void 0, void 0, v
                 res.json(updatedPlanet);
                 return [3 /*break*/, 4];
             case 3:
-                error_3 = _a.sent();
-                res.status(500).json({ error: error_3.message });
+                error_2 = _a.sent();
+                res.status(500).json({ error: error_2.message });
                 return [3 /*break*/, 4];
             case 4: return [2 /*return*/];
         }
     });
 }); });
 app.delete('/planets/:id', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var planetId, planetToDelete, error_4;
+    var planetId, planetToDelete, error_3;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -151,8 +152,8 @@ app.delete('/planets/:id', function (req, res) { return __awaiter(void 0, void 0
                 res.sendStatus(204);
                 return [3 /*break*/, 4];
             case 3:
-                error_4 = _a.sent();
-                res.status(500).json({ error: error_4.message });
+                error_3 = _a.sent();
+                res.status(500).json({ error: error_3.message });
                 return [3 /*break*/, 4];
             case 4: return [2 /*return*/];
         }

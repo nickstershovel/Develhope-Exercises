@@ -32,18 +32,22 @@ app.post('/planets', validate({ body: planetSchema }), async (req, res) => {
         res.status(201).json(planet);
 });
 
-app.get('/planets/:id', async (req, res) => {
-    try {
+app.get('/planets/:id(\\d+)', async (req, res, next) => {
         const planetId = parseInt(req.params.id);
         const planet = await prisma.planet.findUnique({ where: { id: planetId } });
+    //     if (!planet) {
+    //         return res.status(404).json({ error: `Planet with ID ${planetId} not found` });
+    //     }
+    //     res.json(planet);
+    // } catch (error) {
+    //     res.status(500).json({ error: error.message });
         if (!planet) {
-            return res.status(404).json({ error: `Planet with ID ${planetId} not found` });
+            res.status(404)
+            return next(`Cannot GET /planets/${planetId}`)
         }
         res.json(planet);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
     }
-}
+
 )
 
 app.put('/planets/:id', async (req, res) => {
