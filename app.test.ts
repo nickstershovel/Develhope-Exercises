@@ -199,7 +199,7 @@ describe("PUT /planets/:id", () => {
         prismaMock.planet.update.mockRejectedValue(new Error("Error"));
         const response = await request
         .put("/planets/23")
-        .expect({
+        .send({
             "name": "Venus",
             "description": "Lovely planet!",
             "diameter": 21200,
