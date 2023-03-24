@@ -20,8 +20,11 @@
   "homepage": "https://github.com/nickstershovel/Develhope-Exercises#readme",
   "dependencies": {
     "@prisma/client": "^4.11.0",
+    "@sinclair/typebox": "^0.26.3",
     "@types/supertest": "^2.0.12",
+    "ajv-formats": "^2.1.1",
     "dotenv": "^16.0.3",
+    "express-json-validator-middleware": "^3.0.1",
     "figlet": "^1.5.2",
     "nodemon": "^2.0.21"
   },

@@ -4,49 +4,91 @@ import app from "./app";
 
 const request = supertest(app)
 
+describe("GET /planets", () => {
+    test("Valid request", async () => {
+        const planets = [
+            {
+                "id": 4,
+                "name": "Venus",
+                "description": null,
+                "diameter": 21200,
+                "createdAt": "2023-03-23T20:42:22.178Z",
+                "updatedAt": "2023-03-23T20:41:39.398Z"
+            },
+            {
+                "id": 1,
+                "name": "Earth",
+                "description": null,
+                "diameter": 21300,
+                "createdAt": "2023-03-23T12:23:26.308Z",
+                "updatedAt": "2023-03-23T20:42:22.178Z"
+            },
+            {
+                "id": 2,
+                "name": "Mercury",
+                "description": null,
+                "diameter": 23344,
+                "createdAt": "2023-03-23T12:23:47.640Z",
+                "updatedAt": "2023-03-23T20:42:22.178Z"
+            },
+            {
+                "id": 3,
+                "name": "Saturn",
+                "description": null,
+                "diameter": 21122,
+                "createdAt": "2023-03-23T12:23:49.080Z",
+                "updatedAt": "2023-03-23T20:42:30.829Z"
+            }
+        ]
+        // @ts-ignore
+        prismaMock.planet.findMany.mockResolvedValue(planets);
+        const response = await request
+            .get("/planets")
+            .expect(200)
+            .expect("Content-Type", "application/json; charset=utf-8");
+            
+        expect(response.body).toEqual(planets)
+    }
+    )
 
-test("GET /planets", async () => {
-    const planets = [
-        {
-            "id": 4,
-            "name": "Venus",
-            "description": null,
-            "diameter": 21200,
-            "createdAt": "2023-03-23T20:42:22.178Z",
-            "updatedAt": "2023-03-23T20:41:39.398Z"
-        },
-        {
-            "id": 1,
-            "name": "Earth",
-            "description": null,
-            "diameter": 21300,
-            "createdAt": "2023-03-23T12:23:26.308Z",
-            "updatedAt": "2023-03-23T20:42:22.178Z"
-        },
-        {
-            "id": 2,
-            "name": "Mercury",
-            "description": null,
-            "diameter": 23344,
-            "createdAt": "2023-03-23T12:23:47.640Z",
-            "updatedAt": "2023-03-23T20:42:22.178Z"
-        },
-        {
-            "id": 3,
-            "name": "Saturn",
-            "description": null,
-            "diameter": 21122,
-            "createdAt": "2023-03-23T12:23:49.080Z",
-            "updatedAt": "2023-03-23T20:42:30.829Z"
-        }
-    ]
-    // @ts-ignore
-    prismaMock.planet.findMany.mockResolvedValue(planets);
-    const response = await request
-        .get("/planets")
-        .expect(200)
-        .expect("Content-Type", "application/json; charset=utf-8");
-        
-    expect(response.body).toEqual(planets)
-}
-)
+});
+
+
+describe("POST /planets", () => {
+    test("Valid request", async () => {
+        const planet = {
+                "name": "Venus",
+                "diameter": 21200,
+            }
+    
+    
+        const response = await request
+            .post("/planets")
+            .send(planet)
+            .expect(201)
+            .expect("Content-Type", "application/json; charset=utf-8");
+            
+        expect(response.body).toEqual(planet)
+    });
+    
+    test("Invalid request", async () => {
+        const planet = {
+                "diameter": 21200,
+            }
+    
+    
+        const response = await request
+            .post("/planets")
+            .send(planet)
+            .expect(422)
+            .expect("Content-Type", "application/json; charset=utf-8");
+            
+        expect(response.body).toEqual({
+            errors: {
+                body: expect.any(Array)
+            }
+        })
+    }
+    )
+})
+

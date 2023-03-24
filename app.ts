@@ -1,7 +1,10 @@
 const express = require("express");
 const app = express();
 const port = process.env.PORT || 3020;
+
 import prisma from "./lib/prisma/client"
+
+import { validate, PlanetData, planetSchema, validationErrorMiddleware } from "./lib/prisma/validation";
 
 app.use(express.json())
 
@@ -18,29 +21,13 @@ app.get("/planets", async (req, res) => {
     }
 });
 
-const NAME_REQUIRED_ERROR = 'Name field is required and must be a string';
-const DIAMETER_REQUIRED_ERROR = 'Diameter field is required and must be a positive number';
 
-app.post('/planets', async (req, res) => {
-    try {
-        const planet = req.body;
-
-        // Validate name field
-        if (!planet.name || typeof planet.name !== 'string') {
-            return res.status(400).json({ errors: [NAME_REQUIRED_ERROR] });
-        }
-
-        // Validate diameter field
-        if (!planet.diameter || typeof planet.diameter !== 'number' || planet.diameter <= 0) {
-            return res.status(400).json({ errors: [DIAMETER_REQUIRED_ERROR] });
-        }
-        const newPlanet = await prisma.planet.create({
-            data: planet,
-        });
-        res.status(201).json(newPlanet);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
+app.post('/planets', validate({ body: planetSchema }), async (req, res) => {
+        const planet: PlanetData = req.body;
+        // const newPlanet = await prisma.planet.create({
+        //     data: planet,
+        // });
+        res.status(201).json(planet);
 });
 
 app.get('/planets/:id', async (req, res) => {
@@ -91,6 +78,6 @@ app.delete('/planets/:id', async (req, res) => {
 app.listen(port, () => {
     console.log(`Server listening on port ${port}`);
 });
-
+app.use(validationErrorMiddleware);
 
 export default app;

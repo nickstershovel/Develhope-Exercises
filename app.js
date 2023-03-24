@@ -40,6 +40,7 @@ var express = require("express");
 var app = express();
 var port = process.env.PORT || 3020;
 var client_1 = require("./lib/prisma/client");
+var validation_1 = require("./lib/prisma/validation");
 app.use(express.json());
 app.get("/", function (req, res) {
     res.json({ message: "Hello, world!" });
@@ -63,40 +64,19 @@ app.get("/planets", function (req, res) { return __awaiter(void 0, void 0, void 
         }
     });
 }); });
-var NAME_REQUIRED_ERROR = 'Name field is required and must be a string';
-var DIAMETER_REQUIRED_ERROR = 'Diameter field is required and must be a positive number';
-app.post('/planets', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var planet, newPlanet, error_2;
+app.post('/planets', (0, validation_1.validate)({ body: validation_1.planetSchema }), function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var planet;
     return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                _a.trys.push([0, 2, , 3]);
-                planet = req.body;
-                // Validate name field
-                if (!planet.name || typeof planet.name !== 'string') {
-                    return [2 /*return*/, res.status(400).json({ errors: [NAME_REQUIRED_ERROR] })];
-                }
-                // Validate diameter field
-                if (!planet.diameter || typeof planet.diameter !== 'number' || planet.diameter <= 0) {
-                    return [2 /*return*/, res.status(400).json({ errors: [DIAMETER_REQUIRED_ERROR] })];
-                }
-                return [4 /*yield*/, client_1.default.planet.create({
-                        data: planet,
-                    })];
-            case 1:
-                newPlanet = _a.sent();
-                res.status(201).json(newPlanet);
-                return [3 /*break*/, 3];
-            case 2:
-                error_2 = _a.sent();
-                res.status(500).json({ error: error_2.message });
-                return [3 /*break*/, 3];
-            case 3: return [2 /*return*/];
-        }
+        planet = req.body;
+        // const newPlanet = await prisma.planet.create({
+        //     data: planet,
+        // });
+        res.status(201).json(planet);
+        return [2 /*return*/];
     });
 }); });
 app.get('/planets/:id', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var planetId, planet, error_3;
+    var planetId, planet, error_2;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -111,15 +91,15 @@ app.get('/planets/:id', function (req, res) { return __awaiter(void 0, void 0, v
                 res.json(planet);
                 return [3 /*break*/, 3];
             case 2:
-                error_3 = _a.sent();
-                res.status(500).json({ error: error_3.message });
+                error_2 = _a.sent();
+                res.status(500).json({ error: error_2.message });
                 return [3 /*break*/, 3];
             case 3: return [2 /*return*/];
         }
     });
 }); });
 app.put('/planets/:id', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var planetId, planetToUpdate, updatedPlanet, error_4;
+    var planetId, planetToUpdate, updatedPlanet, error_3;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -140,15 +120,15 @@ app.put('/planets/:id', function (req, res) { return __awaiter(void 0, void 0, v
                 res.json(updatedPlanet);
                 return [3 /*break*/, 4];
             case 3:
-                error_4 = _a.sent();
-                res.status(500).json({ error: error_4.message });
+                error_3 = _a.sent();
+                res.status(500).json({ error: error_3.message });
                 return [3 /*break*/, 4];
             case 4: return [2 /*return*/];
         }
     });
 }); });
 app.delete('/planets/:id', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var planetId, planetToDelete, error_5;
+    var planetId, planetToDelete, error_4;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -166,8 +146,8 @@ app.delete('/planets/:id', function (req, res) { return __awaiter(void 0, void 0
                 res.sendStatus(204);
                 return [3 /*break*/, 4];
             case 3:
-                error_5 = _a.sent();
-                res.status(500).json({ error: error_5.message });
+                error_4 = _a.sent();
+                res.status(500).json({ error: error_4.message });
                 return [3 /*break*/, 4];
             case 4: return [2 /*return*/];
         }
@@ -176,4 +156,5 @@ app.delete('/planets/:id', function (req, res) { return __awaiter(void 0, void 0
 app.listen(port, function () {
     console.log("Server listening on port ".concat(port));
 });
+app.use(validation_1.validationErrorMiddleware);
 exports.default = app;
