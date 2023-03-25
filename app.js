@@ -64,7 +64,7 @@ app.get("/planets", function (req, res) { return __awaiter(void 0, void 0, void 
         }
     });
 }); });
-app.post('/planets', (0, validation_1.validate)({ body: validation_1.planetSchema }), function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+app.post("/planets", (0, validation_1.validate)({ body: validation_1.planetSchema }), function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var planetData, planet;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -80,7 +80,7 @@ app.post('/planets', (0, validation_1.validate)({ body: validation_1.planetSchem
         }
     });
 }); });
-app.get('/planets/:id(\\d+)', function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+app.get("/planets/:id(\\d+)", function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
     var planetId, planet;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -104,13 +104,13 @@ app.get('/planets/:id(\\d+)', function (req, res, next) { return __awaiter(void 
         }
     });
 }); });
-app.put('/planets/:id(\\d+)', (0, validation_1.validate)({ body: validation_1.planetSchema }), function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+app.put("/planets/:id(\\d+)", (0, validation_1.validate)({ body: validation_1.planetSchema }), function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
     var planetId, planetData, updatedPlanet, error_2;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 planetId = parseInt(req.params.id);
-                planetData = (req.body);
+                planetData = req.body;
                 _a.label = 1;
             case 1:
                 _a.trys.push([1, 3, , 4]);
@@ -131,27 +131,26 @@ app.put('/planets/:id(\\d+)', (0, validation_1.validate)({ body: validation_1.pl
         }
     });
 }); });
-app.delete('/planets/:id', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var planetId, planetToDelete, error_3;
+app.delete("/planets/:id(\\d+)", function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+    var planetId, error_3;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                _a.trys.push([0, 3, , 4]);
                 planetId = parseInt(req.params.id);
-                return [4 /*yield*/, client_1.default.planet.findUnique({ where: { id: planetId } })];
+                _a.label = 1;
             case 1:
-                planetToDelete = _a.sent();
-                if (!planetToDelete) {
-                    return [2 /*return*/, res.status(404).json({ error: "Planet with ID ".concat(planetId, " not found") })];
-                }
-                return [4 /*yield*/, client_1.default.planet.delete({ where: { id: planetId } })];
+                _a.trys.push([1, 3, , 4]);
+                return [4 /*yield*/, client_1.default.planet.delete({
+                        where: { id: planetId }
+                    })];
             case 2:
                 _a.sent();
-                res.sendStatus(204);
+                res.status(204).end();
                 return [3 /*break*/, 4];
             case 3:
                 error_3 = _a.sent();
-                res.status(500).json({ error: error_3.message });
+                res.status(404);
+                next("Cannot DELETE /planets/".concat(planetId));
                 return [3 /*break*/, 4];
             case 4: return [2 /*return*/];
         }

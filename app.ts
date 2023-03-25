@@ -2,11 +2,16 @@ const express = require("express");
 const app = express();
 const port = process.env.PORT || 3020;
 
-import prisma from "./lib/prisma/client"
+import prisma from "./lib/prisma/client";
 
-import { validate, PlanetData, planetSchema, validationErrorMiddleware } from "./lib/prisma/validation";
+import {
+    validate,
+    PlanetData,
+    planetSchema,
+    validationErrorMiddleware,
+} from "./lib/prisma/validation";
 
-app.use(express.json())
+app.use(express.json());
 
 app.get("/", (req, res) => {
     res.json({ message: "Hello, world!" });
@@ -21,63 +26,62 @@ app.get("/planets", async (req, res) => {
     }
 });
 
+app.post("/planets", validate({ body: planetSchema }), async (req, res) => {
+    const planetData: PlanetData = req.body;
 
-app.post('/planets', validate({ body: planetSchema }), async (req, res) => {
-        const planetData: PlanetData = req.body;
-
-
-        const planet = await prisma.planet.create({
-            data: planetData,
-        });
-        res.status(201).json(planet);
+    const planet = await prisma.planet.create({
+        data: planetData,
+    });
+    res.status(201).json(planet);
 });
 
-app.get('/planets/:id(\\d+)', async (req, res, next) => {
-        const planetId = parseInt(req.params.id);
-        const planet = await prisma.planet.findUnique({ where: { id: planetId } });
+app.get("/planets/:id(\\d+)", async (req, res, next) => {
+    const planetId = parseInt(req.params.id);
+    const planet = await prisma.planet.findUnique({ where: { id: planetId } });
     //     if (!planet) {
     //         return res.status(404).json({ error: `Planet with ID ${planetId} not found` });
     //     }
     //     res.json(planet);
     // } catch (error) {
     //     res.status(500).json({ error: error.message });
-        if (!planet) {
-            res.status(404)
-            return next(`Cannot GET /planets/${planetId}`)
-        }
-        res.json(planet);
-    }
-
-)
-
-app.put('/planets/:id(\\d+)', validate({ body: planetSchema }),async (req, res, next) => {
-        const planetId = parseInt(req.params.id);
-        const planetData = (req.body);
-
-        try{
-        const updatedPlanet = await prisma.planet.update({
-            where: { id: planetId },
-            data: planetData,
-        });
-        res.json(updatedPlanet);
-    }catch(error) {
+    if (!planet) {
         res.status(404);
-        next(`Cannot PUT /planets/${planetId}`)
-
+        return next(`Cannot GET /planets/${planetId}`);
     }
+    res.json(planet);
 });
 
-app.delete('/planets/:id', async (req, res) => {
-    try {
+app.put(
+    "/planets/:id(\\d+)",
+    validate({ body: planetSchema }),
+    async (req, res, next) => {
         const planetId = parseInt(req.params.id);
-        const planetToDelete = await prisma.planet.findUnique({ where: { id: planetId } });
-        if (!planetToDelete) {
-            return res.status(404).json({ error: `Planet with ID ${planetId} not found` });
+        const planetData = req.body;
+
+        try {
+            const updatedPlanet = await prisma.planet.update({
+                where: { id: planetId },
+                data: planetData,
+            });
+            res.json(updatedPlanet);
+        } catch (error) {
+            res.status(404);
+            next(`Cannot PUT /planets/${planetId}`);
         }
-        await prisma.planet.delete({ where: { id: planetId } });
-        res.sendStatus(204);
+    }
+);
+
+app.delete("/planets/:id(\\d+)", async (req, res, next) => {
+    const planetId = parseInt(req.params.id);
+
+    try {
+        await prisma.planet.delete({
+            where: { id: planetId }
+        });
+        res.status(204).end();
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        res.status(404);
+        next(`Cannot DELETE /planets/${planetId}`);
     }
 });
 
