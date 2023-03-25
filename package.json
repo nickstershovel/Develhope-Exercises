@@ -4,8 +4,11 @@
   "description": "Questa è la repository da usare per svolgere gli esercizi di Develhope. \r Ogni branch è diviso per argomento.",
   "main": "random-id.js",
   "scripts": {
-    "start": "nodemon server.js",
-    "test": "jest"
+    "start": "nodemon app.js",
+    "test": "jest",
+    "build": "tsc",
+    "build:dev": "tsc --watch",
+    "web":"serve -p 8080 web/"
   },
   "repository": {
     "type": "git",
@@ -34,6 +37,7 @@
     "jest": "^29.5.0",
     "jest-mock-extended": "^3.0.4",
     "prisma": "^4.11.0",
+    "serve": "^14.2.0",
     "supertest": "^6.3.3",
     "ts-jest": "^29.0.5"
   }
