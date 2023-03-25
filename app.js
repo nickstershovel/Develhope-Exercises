@@ -36,12 +36,17 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+var client_1 = require("./lib/prisma/client");
+var cors = require("cors");
+var validation_1 = require("./lib/prisma/validation");
+var corsOptions = {
+    origin: 'http://localhost:8080'
+};
 var express = require("express");
 var app = express();
-var port = process.env.PORT || 3020;
-var client_1 = require("./lib/prisma/client");
-var validation_1 = require("./lib/prisma/validation");
+var port = process.env.PORT;
 app.use(express.json());
+app.use(cors(corsOptions));
 app.get("/", function (req, res) {
     res.json({ message: "Hello, world!" });
 });

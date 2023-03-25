@@ -1,8 +1,5 @@
-const express = require("express");
-const app = express();
-const port = process.env.PORT || 3020;
-
 import prisma from "./lib/prisma/client";
+import * as cors from "cors"
 
 import {
     validate,
@@ -11,7 +8,17 @@ import {
     validationErrorMiddleware,
 } from "./lib/prisma/validation";
 
+const corsOptions = {
+    origin: 'http://localhost:8080'
+};
+const express = require("express");
+const app = express();
+
+const port = process.env.PORT;
+
 app.use(express.json());
+
+app.use(cors(corsOptions));
 
 app.get("/", (req, res) => {
     res.json({ message: "Hello, world!" });

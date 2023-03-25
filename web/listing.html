@@ -9,7 +9,7 @@
 <body>
     <script>
         async function fetchPlanets() {
-            const response = await fetch('http://localhost:3002/planets')
+            const response = await fetch('http://localhost:3000/planets')
             const planets= response.json();
             console.log(planets);
         }
