@@ -8,6 +8,11 @@ import {
     validationErrorMiddleware,
 } from "./lib/prisma/validation";
 
+import { initMulterMiddleware } from "./lib/middleware/multer";
+
+const upload = initMulterMiddleware();
+
+
 const corsOptions = {
     origin: 'http://localhost:8080'
 };
@@ -92,9 +97,23 @@ app.delete("/planets/:id(\\d+)", async (req, res, next) => {
     }
 });
 
+app.post("/planets/:id(\\d+)/photo", 
+upload.single("photo"),
+
+async (req, res, next) => {
+        console.log("req.file", req.file);
+        if(!req.file) {
+            res.status(400);
+            return next("No photo file uploaded!");
+        }
+        const photoFilename = req.file.filename;
+        res.status(201).json(photoFilename);
+});
+
 app.listen(port, () => {
     console.log(`Server listening on port ${port}`);
 });
 app.use(validationErrorMiddleware);
 
 export default app;
+

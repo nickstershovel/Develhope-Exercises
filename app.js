@@ -39,6 +39,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var client_1 = require("./lib/prisma/client");
 var cors = require("cors");
 var validation_1 = require("./lib/prisma/validation");
+var multer_1 = require("./lib/middleware/multer");
+var upload = (0, multer_1.initMulterMiddleware)();
 var corsOptions = {
     origin: 'http://localhost:8080'
 };
@@ -159,6 +161,19 @@ app.delete("/planets/:id(\\d+)", function (req, res, next) { return __awaiter(vo
                 return [3 /*break*/, 4];
             case 4: return [2 /*return*/];
         }
+    });
+}); });
+app.post("/planets/:id(\\d+)/photo", upload.single("photo"), function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+    var photoFilename;
+    return __generator(this, function (_a) {
+        console.log("req.file", req.file);
+        if (!req.file) {
+            res.status(400);
+            return [2 /*return*/, next("No photo file uploaded!")];
+        }
+        photoFilename = req.file.filename;
+        res.status(201).json(photoFilename);
+        return [2 /*return*/];
     });
 }); });
 app.listen(port, function () {
