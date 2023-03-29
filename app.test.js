@@ -231,7 +231,7 @@ describe("POST /planets/:id/photos", () => {
     test("Valid request with PNG file upload", () => __awaiter(void 0, void 0, void 0, function* () {
         yield request
             .post("/planets/23/photo")
-            .attach("photo", "./test-fixtures/file.png")
+            .attach("photo", "test-fixtures/file.png")
             .expect(201)
             .expect("Access-Control-Allow-Origin", "http://localhost:8080");
     }));
