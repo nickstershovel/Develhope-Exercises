@@ -1,5 +1,5 @@
 import prisma from "./lib/prisma/client";
-import * as cors from "cors"
+import cors from "cors"
 
 import {
     validate,

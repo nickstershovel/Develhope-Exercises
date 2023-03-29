@@ -8,176 +8,96 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __generator = (this && this.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
-    function verb(n) { return function (v) { return step([n, v]); }; }
-    function step(op) {
-        if (f) throw new TypeError("Generator is already executing.");
-        while (g && (g = 0, op[0] && (_ = 0)), _) try {
-            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [op[0] & 2, t.value];
-            switch (op[0]) {
-                case 0: case 1: t = op; break;
-                case 4: _.label++; return { value: op[1], done: false };
-                case 5: _.label++; y = op[1]; op = [0]; continue;
-                case 7: op = _.ops.pop(); _.trys.pop(); continue;
-                default:
-                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                    if (t[2]) _.ops.pop();
-                    _.trys.pop(); continue;
-            }
-            op = body.call(thisArg, _);
-        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
-        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
-    }
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var client_1 = require("./lib/prisma/client");
-var cors = require("cors");
-var validation_1 = require("./lib/prisma/validation");
-var multer_1 = require("./lib/middleware/multer");
-var upload = (0, multer_1.initMulterMiddleware)();
-var corsOptions = {
+const client_1 = __importDefault(require("./lib/prisma/client"));
+const cors_1 = __importDefault(require("cors"));
+const validation_1 = require("./lib/prisma/validation");
+const multer_1 = require("./lib/middleware/multer");
+const upload = (0, multer_1.initMulterMiddleware)();
+const corsOptions = {
     origin: 'http://localhost:8080'
 };
-var express = require("express");
-var app = express();
-var port = process.env.PORT;
+const express = require("express");
+const app = express();
+const port = process.env.PORT;
 app.use(express.json());
-app.use(cors(corsOptions));
-app.get("/", function (req, res) {
+app.use((0, cors_1.default)(corsOptions));
+app.get("/", (req, res) => {
     res.json({ message: "Hello, world!" });
 });
-app.get("/planets", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var resources, error_1;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, client_1.default.planet.findMany()];
-            case 1:
-                resources = _a.sent();
-                res.json(resources);
-                return [3 /*break*/, 3];
-            case 2:
-                error_1 = _a.sent();
-                res.status(500).json({ error: error_1.message });
-                return [3 /*break*/, 3];
-            case 3: return [2 /*return*/];
-        }
+app.get("/planets", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const resources = yield client_1.default.planet.findMany();
+        res.json(resources);
+    }
+    catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}));
+app.post("/planets", (0, validation_1.validate)({ body: validation_1.planetSchema }), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const planetData = req.body;
+    const planet = yield client_1.default.planet.create({
+        data: planetData,
     });
-}); });
-app.post("/planets", (0, validation_1.validate)({ body: validation_1.planetSchema }), function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var planetData, planet;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                planetData = req.body;
-                return [4 /*yield*/, client_1.default.planet.create({
-                        data: planetData,
-                    })];
-            case 1:
-                planet = _a.sent();
-                res.status(201).json(planet);
-                return [2 /*return*/];
-        }
-    });
-}); });
-app.get("/planets/:id(\\d+)", function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var planetId, planet;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                planetId = parseInt(req.params.id);
-                return [4 /*yield*/, client_1.default.planet.findUnique({ where: { id: planetId } })];
-            case 1:
-                planet = _a.sent();
-                //     if (!planet) {
-                //         return res.status(404).json({ error: `Planet with ID ${planetId} not found` });
-                //     }
-                //     res.json(planet);
-                // } catch (error) {
-                //     res.status(500).json({ error: error.message });
-                if (!planet) {
-                    res.status(404);
-                    return [2 /*return*/, next("Cannot GET /planets/".concat(planetId))];
-                }
-                res.json(planet);
-                return [2 /*return*/];
-        }
-    });
-}); });
-app.put("/planets/:id(\\d+)", (0, validation_1.validate)({ body: validation_1.planetSchema }), function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var planetId, planetData, updatedPlanet, error_2;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                planetId = parseInt(req.params.id);
-                planetData = req.body;
-                _a.label = 1;
-            case 1:
-                _a.trys.push([1, 3, , 4]);
-                return [4 /*yield*/, client_1.default.planet.update({
-                        where: { id: planetId },
-                        data: planetData,
-                    })];
-            case 2:
-                updatedPlanet = _a.sent();
-                res.json(updatedPlanet);
-                return [3 /*break*/, 4];
-            case 3:
-                error_2 = _a.sent();
-                res.status(404);
-                next("Cannot PUT /planets/".concat(planetId));
-                return [3 /*break*/, 4];
-            case 4: return [2 /*return*/];
-        }
-    });
-}); });
-app.delete("/planets/:id(\\d+)", function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var planetId, error_3;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                planetId = parseInt(req.params.id);
-                _a.label = 1;
-            case 1:
-                _a.trys.push([1, 3, , 4]);
-                return [4 /*yield*/, client_1.default.planet.delete({
-                        where: { id: planetId }
-                    })];
-            case 2:
-                _a.sent();
-                res.status(204).end();
-                return [3 /*break*/, 4];
-            case 3:
-                error_3 = _a.sent();
-                res.status(404);
-                next("Cannot DELETE /planets/".concat(planetId));
-                return [3 /*break*/, 4];
-            case 4: return [2 /*return*/];
-        }
-    });
-}); });
-app.post("/planets/:id(\\d+)/photo", upload.single("photo"), function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var photoFilename;
-    return __generator(this, function (_a) {
-        console.log("req.file", req.file);
-        if (!req.file) {
-            res.status(400);
-            return [2 /*return*/, next("No photo file uploaded!")];
-        }
-        photoFilename = req.file.filename;
-        res.status(201).json(photoFilename);
-        return [2 /*return*/];
-    });
-}); });
-app.listen(port, function () {
-    console.log("Server listening on port ".concat(port));
+    res.status(201).json(planet);
+}));
+app.get("/planets/:id(\\d+)", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const planetId = parseInt(req.params.id);
+    const planet = yield client_1.default.planet.findUnique({ where: { id: planetId } });
+    //     if (!planet) {
+    //         return res.status(404).json({ error: `Planet with ID ${planetId} not found` });
+    //     }
+    //     res.json(planet);
+    // } catch (error) {
+    //     res.status(500).json({ error: error.message });
+    if (!planet) {
+        res.status(404);
+        return next(`Cannot GET /planets/${planetId}`);
+    }
+    res.json(planet);
+}));
+app.put("/planets/:id(\\d+)", (0, validation_1.validate)({ body: validation_1.planetSchema }), (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const planetId = parseInt(req.params.id);
+    const planetData = req.body;
+    try {
+        const updatedPlanet = yield client_1.default.planet.update({
+            where: { id: planetId },
+            data: planetData,
+        });
+        res.json(updatedPlanet);
+    }
+    catch (error) {
+        res.status(404);
+        next(`Cannot PUT /planets/${planetId}`);
+    }
+}));
+app.delete("/planets/:id(\\d+)", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const planetId = parseInt(req.params.id);
+    try {
+        yield client_1.default.planet.delete({
+            where: { id: planetId }
+        });
+        res.status(204).end();
+    }
+    catch (error) {
+        res.status(404);
+        next(`Cannot DELETE /planets/${planetId}`);
+    }
+}));
+app.post("/planets/:id(\\d+)/photo", upload.single("photo"), (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log("req.file", req.file);
+    if (!req.file) {
+        res.status(400);
+        return next("No photo file uploaded!");
+    }
+    const photoFilename = req.file.filename;
+    res.status(201).json(photoFilename);
+}));
+app.listen(port, () => {
+    console.log(`Server listening on port ${port}`);
 });
 app.use(validation_1.validationErrorMiddleware);
 exports.default = app;
