@@ -269,17 +269,27 @@ describe("DELETE /planet/:id", () => {
 */
 describe("POST /planets/:id/photos",  () => {
     test("Valid request with PNG file upload", async () => {
-        
         await request
         .post("/planets/23/photo")
         .attach("photo", "test-fixtures/file.png")
         .expect(201)
         .expect("Access-Control-Allow-Origin", "http://localhost:8080");
 
-
     });
 
+    test("Planet does not exist", async () => {
+        //@ts-ignore
+        prismaMock.planet.update.mockRejectedValue(new Error("Error"))
 
+        const response = await request
+        .post("/planets/23/photo")
+        .attach("photo", "test-fixtures/file.png")
+        .expect(404)
+        .expect("Content-Type", "text/html; charset=utf-8")
+
+        expect(response.text).toContain("Cannot POST /planets/23/photo")
+
+    })
 
 
     test("invalid planet ID", async () => {

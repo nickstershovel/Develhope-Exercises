@@ -239,6 +239,16 @@ describe("POST /planets/:id/photos", () => {
             .expect(201)
             .expect("Access-Control-Allow-Origin", "http://localhost:8080");
     }));
+    test("Planet does not exist", () => __awaiter(void 0, void 0, void 0, function* () {
+        //@ts-ignore
+        client_mock_1.prismaMock.planet.update.mockRejectedValue(new Error("Error"));
+        const response = yield request
+            .post("/planets/23/photo")
+            .attach("photo", "test-fixtures/file.png")
+            .expect(404)
+            .expect("Content-Type", "text/html; charset=utf-8");
+        expect(response.text).toContain("Cannot POST /planets/23/photo");
+    }));
     test("invalid planet ID", () => __awaiter(void 0, void 0, void 0, function* () {
         const response = yield request
             .post("/planets/asdf/photo")

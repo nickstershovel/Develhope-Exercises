@@ -18,7 +18,7 @@ const validation_1 = require("./lib/prisma/validation");
 const multer_1 = require("./lib/middleware/multer");
 const upload = (0, multer_1.initMulterMiddleware)();
 const corsOptions = {
-    origin: 'http://localhost:8080'
+    origin: "http://localhost:8080",
 };
 const express = require("express");
 const app = express();
@@ -78,7 +78,7 @@ app.delete("/planets/:id(\\d+)", (req, res, next) => __awaiter(void 0, void 0, v
     const planetId = parseInt(req.params.id);
     try {
         yield client_1.default.planet.delete({
-            where: { id: planetId }
+            where: { id: planetId },
         });
         res.status(204).end();
     }
@@ -93,9 +93,21 @@ app.post("/planets/:id(\\d+)/photo", upload.single("photo"), (req, res, next) =>
         res.status(400);
         return next("No photo file uploaded!");
     }
+    const planetId = Number(req.params.id);
     const photoFilename = req.file.filename;
-    res.status(201).json(photoFilename);
+    try {
+        yield client_1.default.planet.update({
+            where: { id: planetId },
+            data: { photoFilename },
+        });
+    }
+    catch (error) {
+        res.status(404);
+        next(`Cannot POST /planets/${planetId}/photo`);
+    }
+    res.status(201).json(photoFilename); //? To be removed?
 }));
+app.use('/planets/photos/', express.static("uploads"));
 app.listen(port, () => {
     console.log(`Server listening on port ${port}`);
 });
