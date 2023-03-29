@@ -7,5 +7,5 @@ module.exports = {
         "./lib/prisma/client.mock.ts",
         "./lib/middleware/multer.mock.ts"
 ],
-    testMatch: ["**/?(*.)+(spec|test).js"],
+    testMatch: ["**/?(*.)+(spec|test).ts"],
 }
