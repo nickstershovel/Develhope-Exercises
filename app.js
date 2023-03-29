@@ -88,7 +88,6 @@ app.delete("/planets/:id(\\d+)", (req, res, next) => __awaiter(void 0, void 0, v
     }
 }));
 app.post("/planets/:id(\\d+)/photo", upload.single("photo"), (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log("req.file", req.file);
     if (!req.file) {
         res.status(400);
         return next("No photo file uploaded!");

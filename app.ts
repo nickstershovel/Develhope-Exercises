@@ -101,7 +101,6 @@ app.post(
     upload.single("photo"),
 
     async (req, res, next) => {
-        console.log("req.file", req.file);
         if (!req.file) {
             res.status(400);
             return next("No photo file uploaded!");

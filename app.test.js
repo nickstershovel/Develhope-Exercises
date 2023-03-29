@@ -239,6 +239,21 @@ describe("POST /planets/:id/photos", () => {
             .expect(201)
             .expect("Access-Control-Allow-Origin", "http://localhost:8080");
     }));
+    test("Valid request with JPG file upload", () => __awaiter(void 0, void 0, void 0, function* () {
+        yield request
+            .post("/planets/23/photo")
+            .attach("photo", "test-fixtures/file.jpg")
+            .expect(201)
+            .expect("Access-Control-Allow-Origin", "http://localhost:8080");
+    }));
+    test("Invalid request with text file upload", () => __awaiter(void 0, void 0, void 0, function* () {
+        const response = yield request
+            .post("/planets/23/photo")
+            .attach("photo", "test-fixtures/file.txt")
+            .expect(500)
+            .expect("Content-Type", "text/html; charset=utf-8");
+        expect(response.text).toContain("Error: The uploaded file must be a JPG or a PNG image.");
+    }));
     test("Planet does not exist", () => __awaiter(void 0, void 0, void 0, function* () {
         //@ts-ignore
         client_mock_1.prismaMock.planet.update.mockRejectedValue(new Error("Error"));
