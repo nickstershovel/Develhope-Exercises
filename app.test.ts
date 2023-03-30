@@ -292,7 +292,7 @@ describe("POST /planets/:id/photos",  () => {
         .attach("photo", "test-fixtures/file.txt")
         .expect(500)
         .expect("Content-Type", "text/html; charset=utf-8")
-        expect(response.text).toContain("Error: The uploaded file must be a JPG or a PNG image.")
+        expect(response.text).toContain("Error: The uploaded file must be a JPG or PNG image.")
     });
 
     test("Planet does not exist", async () => {
