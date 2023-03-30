@@ -99,12 +99,12 @@ app.post("/planets/:id(\\d+)/photo", upload.single("photo"), (req, res, next) =>
             where: { id: planetId },
             data: { photoFilename },
         });
+        res.status(201).json(photoFilename); //? To be removed?
     }
     catch (error) {
         res.status(404);
         next(`Cannot POST /planets/${planetId}/photo`);
     }
-    res.status(201).json(photoFilename); //? To be removed?
 }));
 app.use('/planets/photos/', express.static("uploads"));
 app.listen(port, () => {
