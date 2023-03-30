@@ -12,22 +12,30 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+// Import required modules
 const client_1 = __importDefault(require("./lib/prisma/client"));
 const cors_1 = __importDefault(require("cors"));
 const validation_1 = require("./lib/prisma/validation");
 const multer_1 = require("./lib/middleware/multer");
+// Initialize multer middleware for handling file uploads
 const upload = (0, multer_1.initMulterMiddleware)();
+// Set CORS options
 const corsOptions = {
     origin: "http://localhost:8080",
 };
+// Initialize express application
 const express = require("express");
 const app = express();
+// Get port from environment variable
 const port = process.env.PORT;
-app.use(express.json());
-app.use((0, cors_1.default)(corsOptions));
+// Set up middleware
+app.use(express.json()); // Parse JSON request body
+app.use((0, cors_1.default)(corsOptions)); // Enable CORS
+// Set up routes
 app.get("/", (req, res) => {
     res.json({ message: "Hello, world!" });
 });
+// Get all planets
 app.get("/planets", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const resources = yield client_1.default.planet.findMany();
@@ -37,6 +45,7 @@ app.get("/planets", (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         res.status(500).json({ error: error.message });
     }
 }));
+// Create a new planet
 app.post("/planets", (0, validation_1.validate)({ body: validation_1.planetSchema }), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const planetData = req.body;
     const planet = yield client_1.default.planet.create({
@@ -44,21 +53,17 @@ app.post("/planets", (0, validation_1.validate)({ body: validation_1.planetSchem
     });
     res.status(201).json(planet);
 }));
+// Get a planet by ID
 app.get("/planets/:id(\\d+)", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const planetId = parseInt(req.params.id);
     const planet = yield client_1.default.planet.findUnique({ where: { id: planetId } });
-    //     if (!planet) {
-    //         return res.status(404).json({ error: `Planet with ID ${planetId} not found` });
-    //     }
-    //     res.json(planet);
-    // } catch (error) {
-    //     res.status(500).json({ error: error.message });
     if (!planet) {
         res.status(404);
         return next(`Cannot GET /planets/${planetId}`);
     }
     res.json(planet);
 }));
+// Update a planet by ID
 app.put("/planets/:id(\\d+)", (0, validation_1.validate)({ body: validation_1.planetSchema }), (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const planetId = parseInt(req.params.id);
     const planetData = req.body;
@@ -74,6 +79,7 @@ app.put("/planets/:id(\\d+)", (0, validation_1.validate)({ body: validation_1.pl
         next(`Cannot PUT /planets/${planetId}`);
     }
 }));
+// Delete a planet by ID
 app.delete("/planets/:id(\\d+)", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const planetId = parseInt(req.params.id);
     try {
@@ -87,28 +93,39 @@ app.delete("/planets/:id(\\d+)", (req, res, next) => __awaiter(void 0, void 0, v
         next(`Cannot DELETE /planets/${planetId}`);
     }
 }));
-app.post("/planets/:id(\\d+)/photo", upload.single("photo"), (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+// Define an endpoint to upload a photo for a planet with a specific ID
+app.post("/planets/:id(\\d+)/photo", // URL pattern with regex to only accept numeric IDs
+upload.single("photo"), // Use the 'upload' middleware to handle file uploads
+// Handler function for the endpoint
+(req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    // Check if a file was uploaded
     if (!req.file) {
-        res.status(400);
-        return next("No photo file uploaded!");
+        res.status(400); // Set response status code to 400 Bad Request
+        return next("No photo file uploaded!"); // Call the next middleware with an error message
     }
+    // Get the planet ID from the URL parameters and the uploaded file's filename
     const planetId = Number(req.params.id);
     const photoFilename = req.file.filename;
     try {
+        // Update the planet with the new photo filename using the Prisma ORM
         yield client_1.default.planet.update({
             where: { id: planetId },
             data: { photoFilename },
         });
-        res.status(201).json(photoFilename); //? To be removed?
+        res.status(201).json(photoFilename); // Set response status code to 201 Created and return the photo filename as JSON
     }
     catch (error) {
-        res.status(404);
-        next(`Cannot POST /planets/${planetId}/photo`);
+        res.status(404); // Set response status code to 404 Not Found
+        next(`Cannot POST /planets/${planetId}/photo`); // Call the next middleware with an error message
     }
 }));
+// Serve uploaded photos at a separate URL endpoint
 app.use('/planets/photos/', express.static("uploads"));
+// Start the server on the specified port
 app.listen(port, () => {
     console.log(`Server listening on port ${port}`);
 });
+// Use the validationErrorMiddleware for handling validation errors in other routes
 app.use(validation_1.validationErrorMiddleware);
+// Export the Express app instance as the default export
 exports.default = app;
