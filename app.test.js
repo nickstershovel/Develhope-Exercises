@@ -227,7 +227,7 @@ describe("DELETE /planet/:id", () => {
         expect(response.text).toContain("Cannot DELETE /planets/asdf");
     }));
 });
-/**
+/*
 * These tests depend on:  src/lib/middleware/multer.mock.ts
 * It uses multer.memoryStorage so no files are written to disk.
 */
