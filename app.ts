@@ -2,6 +2,8 @@ import { Express } from "express";
 import cors from "cors";
 
 import { validationErrorMiddleware } from "./lib/validation";
+import { initSessionMiddleware } from "./lib/middleware/sessions";
+import { passport } from "./lib/middleware/passport";
 
 import planetsRoutes from "./routes/planets"
 // Set CORS options
@@ -15,7 +17,9 @@ const app = express();
 
 // Get port from environment variable
 const port = process.env.PORT;
-
+app.use(initSessionMiddleware());
+app.use(passport.initialize());
+app.use(passport.session());
 // Set up middleware
 app.use(express.json()); // Parse JSON request body
 app.use(cors(corsOptions)); // Enable CORS
