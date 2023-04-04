@@ -1,5 +1,5 @@
 import "dotenv/config"
-import config from "././lib/prisma/validation/config"
+import config from "./lib/validation/config"
 import app from "./app"
 
 const port = config.PORT;

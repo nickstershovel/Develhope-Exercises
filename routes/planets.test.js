@@ -13,8 +13,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const supertest_1 = __importDefault(require("supertest"));
-const client_mock_1 = require("./lib/client.mock");
-const app_1 = __importDefault(require("./app"));
+const client_mock_1 = require("../lib/client.mock");
+const app_1 = __importDefault(require("../app"));
 const request = (0, supertest_1.default)(app_1.default);
 describe("GET /planets", () => {
     test("Valid request", () => __awaiter(void 0, void 0, void 0, function* () {
