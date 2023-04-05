@@ -5,10 +5,13 @@ import { validationErrorMiddleware } from "./lib/validation";
 import { initSessionMiddleware } from "./lib/middleware/sessions";
 import { passport } from "./lib/middleware/passport";
 
-import planetsRoutes from "./routes/planets"
+import planetsRoutes from "./routes/planets";
+
+import authRoutes from "./routes/auth";
 // Set CORS options
 const corsOptions = {
     origin: "http://localhost:8080",
+    credentials: true,
 };
 
 // Initialize express application
@@ -24,7 +27,8 @@ app.use(passport.session());
 app.use(express.json()); // Parse JSON request body
 app.use(cors(corsOptions)); // Enable CORS
 
-app.use("/planets", planetsRoutes)
+app.use("/planets", planetsRoutes);
+app.use("/auth", authRoutes);
 
 // Use the validationErrorMiddleware for handling validation errors in other routes
 app.use(validationErrorMiddleware);
