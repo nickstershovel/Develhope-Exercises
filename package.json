@@ -4,7 +4,7 @@
   "description": "Questa è la repository da usare per svolgere gli esercizi di Develhope. \r Ogni branch è diviso per argomento.",
   "main": "random-id.js",
   "scripts": {
-    "start": "nodemon app.js",
+    "start": "nodemon server.ts",
     "test": "jest",
     "build": "tsc",
     "build:dev": "tsc --watch",

@@ -39,6 +39,7 @@ const express_1 = __importStar(require("express"));
 // Import required modules
 const client_1 = __importDefault(require("../lib/client"));
 const validation_1 = require("../lib/validation");
+const passport_1 = require("../lib/middleware/passport");
 const multer_1 = require("../lib/middleware/multer");
 // Initialize multer middleware for handling file uploads
 const upload = (0, multer_1.initMulterMiddleware)();
@@ -54,7 +55,7 @@ router.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 }));
 // Create a new planet
-router.post("/", (0, validation_1.validate)({ body: validation_1.planetSchema }), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.post("/", passport_1.checkAuthorization, (0, validation_1.validate)({ body: validation_1.planetSchema }), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const planetData = req.body;
     const planet = yield client_1.default.planet.create({
         data: planetData,
@@ -72,7 +73,7 @@ router.get("/:id(\\d+)", (req, res, next) => __awaiter(void 0, void 0, void 0, f
     res.json(planet);
 }));
 // Update a planet by ID
-router.put("/:id(\\d+)", (0, validation_1.validate)({ body: validation_1.planetSchema }), (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+router.put("/:id(\\d+)", passport_1.checkAuthorization, (0, validation_1.validate)({ body: validation_1.planetSchema }), (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const planetId = parseInt(req.params.id);
     const planetData = req.body;
     try {
@@ -88,7 +89,7 @@ router.put("/:id(\\d+)", (0, validation_1.validate)({ body: validation_1.planetS
     }
 }));
 // Delete a planet by ID
-router.delete("/:id(\\d+)", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+router.delete("/:id(\\d+)", passport_1.checkAuthorization, (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const planetId = parseInt(req.params.id);
     try {
         yield client_1.default.planet.delete({
@@ -103,7 +104,7 @@ router.delete("/:id(\\d+)", (req, res, next) => __awaiter(void 0, void 0, void 0
 }));
 // Define an endpoint to upload a photo for a planet with a specific ID
 router.post("/:id(\\d+)/photo", // URL pattern with regex to only accept numeric IDs
-upload.single("photo"), // Use the 'upload' middleware to handle file uploads
+passport_1.checkAuthorization, upload.single("photo"), // Use the 'upload' middleware to handle file uploads
 // Handler function for the endpoint
 (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     // Check if a file was uploaded
@@ -128,5 +129,5 @@ upload.single("photo"), // Use the 'upload' middleware to handle file uploads
     }
 }));
 // Serve uploaded photos at a separate URL endpoint
-router.use('/photos/', express_1.default.static("uploads"));
+router.use("/photos/", express_1.default.static("uploads"));
 exports.default = router;

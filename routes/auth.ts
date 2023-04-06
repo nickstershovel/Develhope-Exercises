@@ -8,7 +8,7 @@ router.get("/login", (request, response, next) => {
         !request.query.redirectTo
     ) {
         response.status(400);
-        return next("MIssing redirectTo query string parameter");
+        return next("Missing redirectTo query string parameter");
     }
 
     request.session.redirectTo = request.query.redirectTo;
@@ -17,7 +17,7 @@ router.get("/login", (request, response, next) => {
 });
 
 router.get(
-    "/auth/github/login",
+    "/github/login",
     passport.authenticate("github", {
         scope: ["user:email"],
     })
