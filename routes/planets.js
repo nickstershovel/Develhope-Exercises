@@ -57,8 +57,9 @@ router.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 // Create a new planet
 router.post("/", passport_1.checkAuthorization, (0, validation_1.validate)({ body: validation_1.planetSchema }), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const planetData = req.body;
+    const username = req.user.username;
     const planet = yield client_1.default.planet.create({
-        data: planetData,
+        data: Object.assign(Object.assign({}, planetData), { createdBy: username, updatedBy: username })
     });
     res.status(201).json(planet);
 }));
@@ -74,12 +75,14 @@ router.get("/:id(\\d+)", (req, res, next) => __awaiter(void 0, void 0, void 0, f
 }));
 // Update a planet by ID
 router.put("/:id(\\d+)", passport_1.checkAuthorization, (0, validation_1.validate)({ body: validation_1.planetSchema }), (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     const planetId = parseInt(req.params.id);
     const planetData = req.body;
+    const username = (_a = req.user) === null || _a === void 0 ? void 0 : _a.username;
     try {
         const updatedPlanet = yield client_1.default.planet.update({
             where: { id: planetId },
-            data: planetData,
+            data: Object.assign(Object.assign({}, planetData), { updatedBy: username })
         });
         res.json(updatedPlanet);
     }

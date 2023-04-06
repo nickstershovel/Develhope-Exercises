@@ -31,9 +31,14 @@ router.post(
     validate({ body: planetSchema }),
     async (req, res) => {
         const planetData: PlanetData = req.body;
+        const username = req.user.username
 
         const planet = await prisma.planet.create({
-            data: planetData,
+            data: {
+                ...planetData,
+                createdBy: username,
+                updatedBy: username,
+            }
         });
         res.status(201).json(planet);
     }
@@ -59,11 +64,15 @@ router.put(
     async (req, res, next) => {
         const planetId = parseInt(req.params.id);
         const planetData = req.body;
+        const username = req.user?.username as string;
 
         try {
             const updatedPlanet = await prisma.planet.update({
                 where: { id: planetId },
-                data: planetData,
+                data: {
+                    ...planetData,
+                    updatedBy: username
+                }
             });
             res.json(updatedPlanet);
         } catch (error) {

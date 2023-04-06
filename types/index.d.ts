@@ -1,6 +1,6 @@
 declare global {
     namespace Express {
-        interface user {
+        interface User {
             username: string;
         }
     }
@@ -13,4 +13,4 @@ declare module "express-session" {
     }
 }
 
-export {};
+export { };
