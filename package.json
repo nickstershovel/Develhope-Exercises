@@ -27,6 +27,7 @@
     "@types/cors": "^2.8.13",
     "@types/supertest": "^2.0.12",
     "ajv-formats": "^2.1.1",
+    "cli-color": "^2.0.3",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "express-json-validator-middleware": "^3.0.1",
